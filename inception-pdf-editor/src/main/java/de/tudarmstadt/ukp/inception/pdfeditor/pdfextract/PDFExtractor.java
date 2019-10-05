@@ -38,6 +38,8 @@ import java.io.StringWriter;
 import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.zip.GZIPOutputStream;
 
 import org.apache.commons.lang3.StringUtils;
@@ -68,6 +70,8 @@ import org.apache.pdfbox.util.Vector;
 public class PDFExtractor
     extends PDFGraphicsStreamEngine
 {
+	
+	private static final Logger LOGGER = Logger.getLogger(PDFExtractor.class.getName());
 
     public static void main(String[] args)
     {
@@ -114,7 +118,9 @@ public class PDFExtractor
             }
         }
         catch (Exception e) {
-            System.out.println(e.getMessage());
+           
+        	LOGGER.log(Level.INFO,e.getMessage());
+        	
         }
     }
 
@@ -482,7 +488,8 @@ public class PDFExtractor
         }
         else {
             // shouldn't happen, please open issue in JIRA
-            System.out.println("Unknown font class: " + font.getClass());
+            
+        	LOGGER.log(Level.INFO,"Unknown font class: " + font.getClass());
         }
         if (path == null) {
             return null;

@@ -35,6 +35,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.Set;
 
 import org.apache.commons.compress.compressors.CompressorException;
@@ -65,6 +67,8 @@ import de.tudarmstadt.ukp.inception.kb.yaml.KnowledgeBaseProfile;
 public class SPARQLQueryBuilderGenericTest
 {
     private static final List<String> SKIPPED_PROFILES = asList("babel_net", "yago");
+    
+    private static final Logger LOGGER = Logger.getLogger(SPARQLQueryBuilderGenericTest.class.getName());
     
     @Parameterized.Parameters(name = "KB = {0}")
     public static List<Object[]> data() throws Exception
@@ -169,7 +173,7 @@ public class SPARQLQueryBuilderGenericTest
         
         assertThat(roots).extracting(KBHandle::getIdentifier).allMatch(_root -> {
             try (RepositoryConnection conn = repo.getConnection()) {
-//                System.out.print("R"); 
+//                LOGGER.log(Level.INFO,"R"); 
                 List<KBHandle> children = SPARQLQueryBuilder
                         .forClasses(kb)
                         .childrenOf(_root)
@@ -184,7 +188,7 @@ public class SPARQLQueryBuilderGenericTest
                                 .stream()
                                 .map(KBHandle::getIdentifier)
 //                                .map(v -> { 
-//                                    System.out.print("C"); 
+//                                   LOGGER.log(Level.INFO,"C"); 
 //                                    return v;
 //                                })
                                 .anyMatch(iri -> rootIdentifiers.contains(iri)));
@@ -201,9 +205,10 @@ public class SPARQLQueryBuilderGenericTest
                     .withLabelMatchingExactlyAnyOf(".[]*+{}()lala")
                     .limit(3);
             
-            System.out.printf("Query   : %n");
+            LOGGER.log(Level.INFO,"Query   : %n");
+            
             Arrays.stream(builder.selectQuery().getQueryString().split("\n"))
-                    .forEachOrdered(l -> System.out.printf("          %s%n", l));
+                    .forEachOrdered(l -> LOGGER.log(Level.INFO,"          %s%n", l));
             
             builder.asHandles(conn, true);
             

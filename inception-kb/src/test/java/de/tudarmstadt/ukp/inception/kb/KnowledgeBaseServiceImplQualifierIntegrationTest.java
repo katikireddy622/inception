@@ -22,6 +22,8 @@ import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.persistence.EntityManager;
 
@@ -73,7 +75,10 @@ public class KnowledgeBaseServiceImplQualifierIntegrationTest {
 
     @Rule
     public final SpringMethodRule springMethodRule = new SpringMethodRule();
+    
+    private static final Logger LOGGER = Logger.getLogger(KnowledgeBaseServiceImplQualifierIntegrationTest.class.getName());
 
+    
     private KnowledgeBaseServiceImpl sut;
     private Project project;
     private KnowledgeBase kb;
@@ -82,7 +87,6 @@ public class KnowledgeBaseServiceImplQualifierIntegrationTest {
     private KBConcept concept;
     private KBProperty property;
     private KBHandle conceptHandle;
-    private KBHandle propertyHandle;
     private KBStatement statement;
 
     @BeforeClass
@@ -108,7 +112,7 @@ public class KnowledgeBaseServiceImplQualifierIntegrationTest {
         sut.createConcept(kb, concept);
         sut.createProperty(kb, property);
         conceptHandle = concept.toKBHandle();
-        propertyHandle = property.toKBHandle();
+        property.toKBHandle();
         statement = testFixtures.buildStatement(conceptHandle, property, "Test statement");
         sut.upsertStatement(kb, statement);
     }
@@ -166,7 +170,7 @@ public class KnowledgeBaseServiceImplQualifierIntegrationTest {
         sut.read(kb, conn -> {
             RDFWriter rdfWriter = Rio.createWriter(RDFFormat.TURTLE, System.out);
             conn.export(rdfWriter);
-            System.out.println("------");
+            LOGGER.log(Level.INFO,"------");
             return null;
         });
 

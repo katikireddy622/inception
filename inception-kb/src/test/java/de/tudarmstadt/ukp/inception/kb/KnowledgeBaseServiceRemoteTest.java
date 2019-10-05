@@ -27,6 +27,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.persistence.EntityManager;
 
@@ -77,6 +79,7 @@ public class KnowledgeBaseServiceRemoteTest
     private Project project;
     private TestFixtures testFixtures;
 
+    private static final Logger LOGGER = Logger.getLogger(KnowledgeBaseServiceRemoteTest.class.getName());
     @Rule
     public TestWatcher watcher = new TestWatcher()
     {
@@ -84,7 +87,8 @@ public class KnowledgeBaseServiceRemoteTest
         protected void starting(org.junit.runner.Description aDescription)
         {
             String methodName = aDescription.getMethodName();
-            System.out.printf("\n=== " + methodName + " =====================\n");
+            
+            LOGGER.log(Level.INFO,"\n=== " + methodName + " =====================\n");
         };
     };
 
@@ -337,9 +341,11 @@ public class KnowledgeBaseServiceRemoteTest
         List<KBHandle> rootConceptKBHandle = sut.listRootConcepts(kb, true);
         duration = System.currentTimeMillis() - duration;
 
-        System.out.printf("Root concepts retrieved : %d%n", rootConceptKBHandle.size());
-        System.out.printf("Time required           : %d ms%n", duration);
-        rootConceptKBHandle.stream().limit(10).forEach(h -> System.out.printf("   %s%n", h));
+        
+        LOGGER.log(Level.INFO,"Root concepts retrieved : %d%n", rootConceptKBHandle.size());
+        LOGGER.log(Level.INFO,"Time required           : %d ms%n", duration);
+       
+        rootConceptKBHandle.stream().limit(10).forEach(h -> LOGGER.log(Level.INFO,"   %s%n", h));
 
         assertThat(rootConceptKBHandle).as("Check that root concept list is not empty")
                 .isNotEmpty();
@@ -358,9 +364,9 @@ public class KnowledgeBaseServiceRemoteTest
         List<KBProperty> propertiesKBHandle = sut.listProperties(kb, true);
         duration = System.currentTimeMillis() - duration;
 
-        System.out.printf("Properties retrieved : %d%n", propertiesKBHandle.size());
-        System.out.printf("Time required        : %d ms%n", duration);
-        propertiesKBHandle.stream().limit(10).forEach(h -> System.out.printf("   %s%n", h));
+        LOGGER.log(Level.INFO,"Properties retrieved : %d%n", propertiesKBHandle.size());
+        LOGGER.log(Level.INFO,"Time required        : %d ms%n", duration);
+        propertiesKBHandle.stream().limit(10).forEach(h ->LOGGER.log(Level.INFO,"   %s%n", h));
 
         assertThat(propertiesKBHandle).as("Check that property list is not empty").isNotEmpty();
     }
@@ -375,9 +381,10 @@ public class KnowledgeBaseServiceRemoteTest
                 true);
         duration = System.currentTimeMillis() - duration;
 
-        System.out.printf("Parents for          : %s%n", sutConfig.getTestIdentifier());
-        System.out.printf("Parents retrieved    : %d%n", parentList.size());
-        System.out.printf("Time required        : %d ms%n", duration);
+        LOGGER.log(Level.INFO,"Parents for          : %s%n", sutConfig.getTestIdentifier());
+        LOGGER.log(Level.INFO,"Parents retrieved    : %d%n", parentList.size());
+        LOGGER.log(Level.INFO,"Time required        : %d ms%n", duration);
+        
         parentList.stream().limit(10).forEach(h -> System.out.printf("   %s%n", h));
 
         assertThat(parentList).as("Check that parent list is not empty").isNotEmpty();

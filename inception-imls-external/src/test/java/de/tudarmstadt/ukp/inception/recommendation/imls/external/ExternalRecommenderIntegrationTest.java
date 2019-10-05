@@ -32,6 +32,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.apache.uima.UIMAException;
 import org.apache.uima.cas.CAS;
@@ -82,6 +84,9 @@ public class ExternalRecommenderIntegrationTest
     private RemoteStringMatchingNerRecommender remoteRecommender;
     private MockWebServer server;
     private List<String> requestBodies;
+    
+    
+    private static final Logger LOGGER = Logger.getLogger(ExternalRecommenderIntegrationTest.class.getName());
 
     @Before
     public void setUp() throws Exception
@@ -258,7 +263,7 @@ public class ExternalRecommenderIntegrationTest
                     throw new RuntimeException(e);
                 }
 
-                System.err.println("Unknown URL: " + request.getPath());
+                LOGGER.log(Level.WARNING,"Unknown URL: " + request.getPath());
                 return new MockResponse().setResponseCode(404);
             }
         };

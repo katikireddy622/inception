@@ -27,6 +27,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.apache.uima.UIMAException;
 import org.apache.uima.cas.CAS;
@@ -60,6 +62,10 @@ public class OpenNlpNerRecommenderTest
     private RecommenderContext context;
     private Recommender recommender;
     private OpenNlpNerRecommenderTraits traits;
+    
+    private final static Logger LOGGER =  
+            Logger.getLogger(OpenNlpNerRecommenderTest.class.getName()); 
+    
 
     @Before
     public void setUp()
@@ -118,10 +124,10 @@ public class OpenNlpNerRecommenderTest
         double precision = result.computePrecisionScore();
         double recall = result.computeRecallScore();
 
-        System.out.printf("F1-Score: %f%n", fscore);
-        System.out.printf("Accuracy: %f%n", accuracy);
-        System.out.printf("Precision: %f%n", precision);
-        System.out.printf("Recall: %f%n", recall);
+        LOGGER.log(Level.INFO,"F1-Score: %f%n", fscore);
+        LOGGER.log(Level.INFO,"Accuracy: %f%n", accuracy);
+        LOGGER.log(Level.INFO,"Precision: %f%n", precision);
+        LOGGER.log(Level.INFO,"Recall: %f%n", recall);
         
         assertThat(fscore).isStrictlyBetween(0.0, 1.0);
         assertThat(precision).isStrictlyBetween(0.0, 1.0);
@@ -142,7 +148,7 @@ public class OpenNlpNerRecommenderTest
             
             double score = sut.evaluate(casList, splitStrategy).computeF1Score();
 
-            System.out.printf("Score: %f%n", score);
+            LOGGER.log(Level.INFO,"Score: %f%n", score);
 
             assertThat(score).isStrictlyBetween(0.0, 1.0);
             

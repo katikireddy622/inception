@@ -29,6 +29,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import javax.imageio.ImageIO;
 
 import org.apache.pdfbox.contentstream.PDFStreamEngine;
@@ -53,6 +56,8 @@ public class ImageExtractor
     extends PDFStreamEngine
 {
 
+	
+	private static final Logger LOGGER = Logger.getLogger(ImageExtractor.class.getName());
     public static void main(String[] args) throws IOException
     {
         File inFile = new File(args[0]);
@@ -88,6 +93,7 @@ public class ImageExtractor
                     RenderedImage image = regionExt.extract(pageIndex, op.x, op.y, op.w, op.h);
                     String outFileName = baseName + "_" + String.valueOf(count) + ".png";
                     ImageIO.write(image, "png", new File(outDir, outFileName));
+                    LOGGER.log(Level.INFO,outFileName + " is saved.");
                     System.out.println(outFileName + " is saved.");
                     count++;
                 }

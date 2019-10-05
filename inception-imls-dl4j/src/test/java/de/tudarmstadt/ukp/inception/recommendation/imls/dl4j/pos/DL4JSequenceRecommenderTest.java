@@ -31,6 +31,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.apache.uima.UIMAException;
 import org.apache.uima.cas.CAS;
@@ -64,6 +66,9 @@ public class DL4JSequenceRecommenderTest
 
     private RecommenderContext context;
     private DL4JSequenceRecommenderTraits traits;
+    
+    private final static Logger LOGGER =  
+            Logger.getLogger(DL4JSequenceRecommenderTest.class.getName()); 
 
     @Before
     public void setUp()
@@ -287,8 +292,10 @@ public class DL4JSequenceRecommenderTest
         // check how many labels are not padding labels
         long numWithLabel = predictions.stream()
                 .filter(p -> !p.getPosValue().equals(DL4JSequenceRecommender.NO_LABEL)).count();
-        System.out.printf("Predicted %d labels not no_label out of %d.%n", numWithLabel,
-                predictions.size());
+        
+        LOGGER.log(Level.INFO,"Predicted %d labels not no_label out of %d.%n",
+        		new Object[] {numWithLabel,
+                        predictions.size()});
         
         assertThat(predictions).as("There are predictions other than *No_Label*")
             .anyMatch(l -> !l.getPosValue().equals(DL4JSequenceRecommender.NO_LABEL));
@@ -309,10 +316,10 @@ public class DL4JSequenceRecommenderTest
         double precision = result.computePrecisionScore();
         double recall = result.computeRecallScore();
 
-        System.out.printf("POS F1-Score: %f%n", fscore);
-        System.out.printf("POS Accuracy: %f%n", accuracy);
-        System.out.printf("POS Precision: %f%n", precision);
-        System.out.printf("POS Recall: %f%n", recall);
+        LOGGER.log(Level.INFO,"POS F1-Score: %f%n", fscore);
+        LOGGER.log(Level.INFO,"POS Accuracy: %f%n", accuracy);
+        LOGGER.log(Level.INFO,"POS Precision: %f%n", precision);
+        LOGGER.log(Level.INFO,"POS Recall: %f%n", recall);
         
         assertThat(fscore).isStrictlyBetween(0.0, 1.0);
         assertThat(precision).isStrictlyBetween(0.0, 1.0);
@@ -354,8 +361,9 @@ public class DL4JSequenceRecommenderTest
         // check how many labels are not padding labels
         long numWithLabel = predictions.stream()
                 .filter(p -> !p.getValue().equals(DL4JSequenceRecommender.NO_LABEL)).count();
-        System.out.printf("Predicted %d labels not no_label out of %d.%n", numWithLabel,
-                predictions.size());
+        LOGGER.log(Level.INFO,"Predicted %d labels not no_label out of %d.%n",
+        		new Object[] {numWithLabel,
+                        predictions.size()});
         
         assertThat(predictions).as("There are predictions other than *No_Label*")
             .anyMatch(l -> !l.getValue().equals(DL4JSequenceRecommender.NO_LABEL));
@@ -376,10 +384,11 @@ public class DL4JSequenceRecommenderTest
         double precision = result.computePrecisionScore();
         double recall = result.computeRecallScore();
 
-        System.out.printf("NER F1-Score: %f%n", fscore);
-        System.out.printf("NER Accuracy: %f%n", accuracy);
-        System.out.printf("NER Precision: %f%n", precision);
-        System.out.printf("NER Recall: %f%n", recall);
+        LOGGER.log(Level.INFO,"NER F1-Score: %f%n", fscore);
+        LOGGER.log(Level.INFO,"NER Accuracy: %f%n", accuracy);
+        LOGGER.log(Level.INFO,"NER Precision: %f%n", precision);
+        LOGGER.log(Level.INFO,"NER Recall: %f%n", recall);
+        
         
         // FIXME is always zero
         assertThat(fscore).isBetween(0.0, 1.0);
@@ -402,7 +411,8 @@ public class DL4JSequenceRecommenderTest
             
             double score = sut.evaluate(asList(cas.getCas()), splitStrategy).computeF1Score();
 
-            System.out.printf("Score: %f%n", score);
+            
+            LOGGER.log(Level.INFO,"Score: %f%n", score);
 
             assertThat(score).isBetween(0.0, 1.0);
 

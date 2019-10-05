@@ -28,6 +28,8 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.tuple.Pair;
@@ -130,6 +132,8 @@ public class MtasDocumentIndexTest
     private @Autowired SearchService searchService;
     private @Autowired AnnotationSchemaService annotationSchemaService;
 
+    private static final Logger LOGGER = Logger.getLogger(MtasDocumentIndexTest.class.getName());
+    
     @Rule
     public TestWatcher watcher = new TestWatcher()
     {
@@ -137,7 +141,7 @@ public class MtasDocumentIndexTest
         protected void starting(org.junit.runner.Description aDescription)
         {
             String methodName = aDescription.getMethodName();
-            System.out.printf("\n=== " + methodName + " =====================\n");
+          LOGGER.log(Level.INFO,"\n=== " + methodName + " =====================\n");
         };
     };
     

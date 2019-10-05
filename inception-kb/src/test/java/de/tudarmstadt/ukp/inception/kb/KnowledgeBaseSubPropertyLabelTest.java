@@ -25,6 +25,8 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 import javax.persistence.EntityManager;
@@ -66,6 +68,8 @@ public class KnowledgeBaseSubPropertyLabelTest
 {
     private static final String PROJECT_NAME = "Test project";
 
+    private static final Logger LOGGER = Logger.getLogger(KnowledgeBaseSubPropertyLabelTest.class.getName());
+    
     @Rule
     public TemporaryFolder temporaryFolder = new TemporaryFolder();
 
@@ -131,9 +135,13 @@ public class KnowledgeBaseSubPropertyLabelTest
         List<KBHandle> instanceKBHandle = sut.listInstances(kb, concept, true);
         duration = System.currentTimeMillis() - duration;
 
-        System.out.printf("Instances retrieved for %s : %d%n", concept, instanceKBHandle.size());
-        System.out.printf("Time required           : %d ms%n", duration);
-        instanceKBHandle.stream().limit(10).forEach(h -> System.out.printf("   %s%n", h));
+        LOGGER.log(Level.INFO,"Instances retrieved for %s : %d%n",
+        		new Object[] {concept, instanceKBHandle.size()});
+
+        
+        LOGGER.log(Level.INFO,"Time required           : %d ms%n",duration);
+
+        instanceKBHandle.stream().limit(10).forEach(h -> LOGGER.log(Level.INFO,"   %s%n", h));
 
         assertThat(instanceKBHandle).as("Check that instance list is not empty")
                    .isNotEmpty();

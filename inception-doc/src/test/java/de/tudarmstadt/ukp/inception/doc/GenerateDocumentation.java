@@ -23,6 +23,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 import org.apache.commons.io.FileUtils;
@@ -35,6 +37,8 @@ import org.asciidoctor.SafeMode;
 
 public class GenerateDocumentation
 {
+	private static final Logger LOGGER = Logger.getLogger(GenerateDocumentation.class.getName());
+	
     private static Path asciiDocPath = Paths.get("src", "main", "resources", "META-INF", "asciidoc");
 
 
@@ -96,7 +100,9 @@ public class GenerateDocumentation
         Files.createDirectory(outputDir);
 
         for (Path module : modules) {
-            System.out.printf("Including module: %s\n", module);
+            
+        	LOGGER.log(Level.INFO,"Including module: %s\n", module);
+        	
             
             for (File f : FileUtils.listFiles(module.toFile(), TrueFileFilter.INSTANCE,
                     TrueFileFilter.INSTANCE)) {
@@ -111,7 +117,7 @@ public class GenerateDocumentation
         buildDoc("developer-guide", outputDir);
         buildDoc("admin-guide", outputDir);
         
-        System.out.printf("Documentation written to: %s\n", outputDir);
+        LOGGER.log(Level.INFO,"Documentation written to: %s\n", outputDir);
     }
 
     private static Path getInceptionDir()

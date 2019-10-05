@@ -20,6 +20,8 @@ package de.tudarmstadt.ukp.inception.externalsearch.elastic;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.junit.Before;
 import org.junit.Ignore;
@@ -35,6 +37,8 @@ public class ElasticSearchProviderTest
     private ElasticSearchProvider sut;
     private DocumentRepository repo;
     private ElasticSearchProviderTraits traits;
+    
+    private static final Logger LOGGER = Logger.getLogger(ElasticSearchProviderTest.class.getName());
     
     @Before
     public void setup()
@@ -55,7 +59,7 @@ public class ElasticSearchProviderTest
     {
         List<ExternalSearchResult> results = sut.executeQuery(repo, traits, "shiny");
         
-        System.out.println(results);
+        LOGGER.log(Level.INFO,"",results);
         
         assertThat(results).isNotEmpty();
     }

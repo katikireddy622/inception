@@ -38,6 +38,8 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -68,6 +70,8 @@ import de.tudarmstadt.ukp.inception.kb.model.KnowledgeBase;
 
 public class SPARQLQueryBuilderTest
 {
+	
+	private static final Logger LOGGER = Logger.getLogger(SPARQLQueryBuilderTest.class.getName());
     private static final String TURTLE_PREFIX = String.join("\n",
             "@base <http://example.org/> .",
             "@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .",
@@ -1494,7 +1498,8 @@ public class SPARQLQueryBuilderTest
         // Detect the file format
         RDFFormat format = Rio.getParserFormatForFileName(aFilename).orElse(RDFFormat.RDFXML);
 
-        System.out.printf("Loading %s data fron %s%n", format, aFilename);
+        LOGGER.log(Level.INFO,"Loading %s data fron %s%n",
+        		new Object[] {format, aFilename});
         
         // Load files into the repository
         try (InputStream is = new FileInputStream(aFilename)) {

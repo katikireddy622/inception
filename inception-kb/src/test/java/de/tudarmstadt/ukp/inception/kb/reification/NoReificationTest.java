@@ -23,6 +23,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -47,6 +49,9 @@ import de.tudarmstadt.ukp.inception.kb.model.KnowledgeBase;
 
 public class NoReificationTest
 {
+	
+	private static final Logger LOGGER = Logger.getLogger(NoReificationTest.class.getName());
+
     private static final String TURTLE_PREFIX = String.join("\n",
             "@base <http://example.org/> .",
             "@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .",
@@ -124,9 +129,13 @@ public class NoReificationTest
   
             List<KBStatement> results = sut.listStatements(conn, kb, aItem, true);
   
-            System.out.printf("Results : %d in %dms%n", results.size(),
-                    System.currentTimeMillis() - startTime);
-            results.forEach(r -> System.out.printf("          %s%n", r));
+            LOGGER.log(Level.INFO,"Results : %d in %dms%n",
+            		new Object[] { results.size(),
+                            System.currentTimeMillis() - startTime });
+
+            
+            
+            results.forEach(r -> LOGGER.log(Level.INFO,"          %s%n", r));
   
             return results;
         }

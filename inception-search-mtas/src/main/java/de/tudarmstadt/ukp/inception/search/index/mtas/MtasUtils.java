@@ -18,6 +18,8 @@
 package de.tudarmstadt.ukp.inception.search.index.mtas;
 
 import java.nio.ByteBuffer;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.lucene.util.BytesRef;
@@ -27,6 +29,8 @@ import mtas.analysis.util.MtasParserException;
 
 public final class MtasUtils
 {
+	private static final Logger LOGGER = Logger.getLogger(MtasUtils.class.getName());
+	
     private MtasUtils()
     {
         // No instances
@@ -44,10 +48,13 @@ public final class MtasUtils
         
         for (int n = 0; n < dump.length; n++) {
             for (int i = 0; i < dump[n].length; i++) {
-                System.out.print(StringUtils.rightPad(String.valueOf(dump[n][i]), widths[i]));
-                System.out.print(" | ");
+               
+            	LOGGER.log(Level.INFO,""+StringUtils.rightPad(String.valueOf(dump[n][i]), widths[i]));
+            	LOGGER.log(Level.INFO," | ");
+            	
+            	
             }
-            System.out.println();
+            LOGGER.log(Level.INFO,"");
         }        
     }
     

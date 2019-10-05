@@ -21,12 +21,16 @@ import static java.util.Arrays.asList;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.junit.Before;
 import org.junit.Test;
 
 public class TrieTest
 {
+	
+	private static final Logger LOGGER = Logger.getLogger(TrieTest.class.getName());
     private Trie<String> sut;
 
     @Before
@@ -64,7 +68,7 @@ public class TrieTest
         
         sut.put("  this is\ta test  .", "exists");
         
-        System.out.println(sut.keys());
+        LOGGER.log(Level.INFO,"",sut.keys());
         
         assertThat(sut.getNode("this is a test .")).isNotNull();
         assertThat(sut.getNode("  this is\ta test  .")).isNotNull();

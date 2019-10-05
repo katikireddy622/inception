@@ -21,6 +21,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.eclipse.rdf4j.query.MalformedQueryException;
 import org.eclipse.rdf4j.query.parser.sparql.ast.ParseException;
@@ -32,6 +34,9 @@ import de.tudarmstadt.ukp.inception.kb.model.KnowledgeBase;
 
 public class SPARQLQueryBuilderAsserts
 {
+	
+	private static final Logger LOGGER = Logger.getLogger(SPARQLQueryBuilderAsserts.class.getName());
+	
     public static void assertThatChildrenOfExplicitRootCanBeRetrieved(KnowledgeBase aKB,
             Repository aRepository, String aRootClass)
     {
@@ -63,11 +68,14 @@ public class SPARQLQueryBuilderAsserts
 
             List<KBHandle> results = aBuilder.asHandles(conn, true);
 
-            System.out.printf("Results : %d in %dms%n", results.size(),
-                    System.currentTimeMillis() - startTime);
+            
+            LOGGER.log(Level.INFO,"Results : %d in %dms%n",
+            		new Object[] {results.size(),System.currentTimeMillis() - startTime});
             results.stream().limit(10).forEach(r -> System.out.printf("          %s%n", r));
             if (results.size() > 10) {
-                System.out.printf("          ... and %d more ...%n", results.size() - 10);
+               
+            	LOGGER.log(Level.INFO,"          ... and %d more ...%n", results.size() - 10);
+            	
             }
             
             return results;
@@ -86,8 +94,10 @@ public class SPARQLQueryBuilderAsserts
 
             boolean result = aBuilder.exists(conn, true);
 
-            System.out.printf("Results : %b in %dms%n", result,
-                    System.currentTimeMillis() - startTime);
+            
+            LOGGER.log(Level.INFO,"Results : %b in %dms%n",
+            		new Object[] {result,System.currentTimeMillis() - startTime});
+
             
             return result;
         }
@@ -98,9 +108,11 @@ public class SPARQLQueryBuilderAsserts
     
     private static void printQuery(SPARQLQuery aBuilder)
     {
-        System.out.printf("Query   : %n");
+       
+    	LOGGER.log(Level.INFO,"Query   : %n");
+    	
         Arrays.stream(aBuilder.selectQuery().getQueryString().split("\n"))
-                .forEachOrdered(l -> System.out.printf("          %s%n", l));
+                .forEachOrdered(l -> LOGGER.log(Level.INFO,"          %s%n", l));
     }
     
     private static <T extends RuntimeException> T handleParseException(SPARQLQuery aBuilder,

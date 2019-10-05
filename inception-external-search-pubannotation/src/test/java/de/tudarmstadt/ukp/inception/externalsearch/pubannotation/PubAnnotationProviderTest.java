@@ -20,6 +20,8 @@ package de.tudarmstadt.ukp.inception.externalsearch.pubannotation;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -34,6 +36,8 @@ public class PubAnnotationProviderTest
     private PubAnnotationProvider sut;
     private DocumentRepository repo;
     private PubAnnotationProviderTraits traits;
+    
+    private static final Logger LOGGER = Logger.getLogger(PubAnnotationProviderTest.class.getName());
     
     @Before
     public void setup()
@@ -50,7 +54,8 @@ public class PubAnnotationProviderTest
     {
         List<PubAnnotationDocumentHandle> results = sut.query(traits, "binding");
         
-        System.out.println(results);
+        LOGGER.log(Level.INFO,"",results);
+        
         
         assertThat(results).isNotEmpty();
     }
@@ -60,7 +65,7 @@ public class PubAnnotationProviderTest
     {
         List<ExternalSearchResult> results = sut.executeQuery(repo, traits, "binding");
         
-        System.out.println(results);
+        LOGGER.log(Level.INFO,"",results);
         
         assertThat(results).isNotEmpty();
     }
@@ -70,7 +75,7 @@ public class PubAnnotationProviderTest
     {
         String text = sut.getDocumentText(repo, traits, "PMC", "1064873");
         
-        System.out.println(text);
+        LOGGER.log(Level.INFO,"",text);
         
         assertThat(text).isNotEmpty();
     }

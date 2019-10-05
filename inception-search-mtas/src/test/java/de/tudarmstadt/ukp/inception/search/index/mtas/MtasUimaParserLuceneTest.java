@@ -29,6 +29,8 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
 import java.util.Objects;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.custom.CustomAnalyzer;
@@ -79,6 +81,8 @@ import mtas.search.spans.util.MtasSpanQuery;
 @Ignore("Currently does not run because requires INCEpTION running as well")
 public class MtasUimaParserLuceneTest
 {
+	private static final Logger LOGGER = Logger.getLogger(MtasUimaParserLuceneTest.class.getName());
+	
     /** The Constant FIELD_ID. */
     private static final String FIELD_ID = "id";
 
@@ -193,7 +197,7 @@ public class MtasUimaParserLuceneTest
         SpanWeight spanweight = q.rewrite(indexReader).createWeight(searcher, false, boost);
 
         while (iterator.hasNext()) {
-            System.out.println("#### new iteration ####");
+        	LOGGER.log(Level.INFO,"#### new iteration ####");
             LeafReaderContext lrc = iterator.next();
             Spans spans = spanweight.getSpans(lrc, SpanWeight.Postings.POSITIONS);
             SegmentReader segmentReader = (SegmentReader) lrc.reader();
@@ -205,45 +209,54 @@ public class MtasUimaParserLuceneTest
                             || segmentReader.getLiveDocs().get(spans.docID())) {
                         String idValue = segmentReader.document(spans.docID()).getField(FIELD_ID)
                                 .stringValue();
-                        System.out.println("********  New doc " + spans.docID() + "-" + idValue);
+                        
+                        LOGGER.log(Level.INFO,"********  New doc " + spans.docID() + "-" + idValue);
                         while (spans.nextStartPosition() != Spans.NO_MORE_POSITIONS) {
-                            System.out.println("------");
+
+                        	LOGGER.log(Level.INFO,"------");
+                        	
                             List<MtasTokenString> tokens = mtasCodecInfo
                                     .getPrefixFilteredObjectsByPositions(field, spans.docID(),
                                             prefixes, spans.startPosition(),
                                             (spans.endPosition() - 1));
                             for (MtasTokenString token : tokens) {
-                                System.out.print("docId: " + (lrc.docBase + spans.docID()) + ", ");
-                                System.out.print(" position: " + token.getPositionStart()
-                                        + (!Objects.equals(token.getPositionEnd(),
-                                                token.getPositionStart())
-                                                        ? "-" + token.getPositionEnd()
-                                                        : ""));
-                                System.out.print(" offset: " + token.getOffsetStart() + "-"
+                            
+                            	LOGGER.log(Level.INFO,"docId: " + (lrc.docBase + spans.docID()) + ", ");
+                            	LOGGER.log(Level.INFO," position: " + token.getPositionStart()
+                                + (!Objects.equals(token.getPositionEnd(),
+                                        token.getPositionStart())
+                                                ? "-" + token.getPositionEnd()
+                                                : ""));
+                            	LOGGER.log(Level.INFO," offset: " + token.getOffsetStart() + "-"
                                         + token.getOffsetEnd());
-                                System.out.print(" mtasId: " + token.getId());
-                                System.out.println(" " + token.getPrefix()
-                                        + (token.getPostfix() != null ? ":" + token.getPostfix()
-                                                : "")
-                                        + ", ");
+                            	LOGGER.log(Level.INFO," mtasId: " + token.getId());
+                            	LOGGER.log(Level.INFO," " + token.getPrefix()
+                                + (token.getPostfix() != null ? ":" + token.getPostfix()
+                                : "")
+                        + ", ");
+                            	
+                              
                             }
-                            System.out.println("------");
+                            LOGGER.log(Level.INFO,"------");
+                        	
                             List<MtasTreeHit<String>> hits = mtasCodecInfo
                                     .getPositionedTermsByPrefixesAndPositionRange(field,
                                             spans.docID(), prefixes, spans.startPosition(),
                                             (spans.endPosition() - 1));
                             for (MtasTreeHit<String> hit : hits) {
-                                System.out.print("docId: " + (lrc.docBase + spans.docID()) + ", ");
-                                System.out.print("position: " + hit.startPosition
+                            
+                            	LOGGER.log(Level.INFO,"docId: " + (lrc.docBase + spans.docID()) + ", ");
+                            	LOGGER.log(Level.INFO,"position: " + hit.startPosition
                                         + (hit.endPosition != hit.startPosition
-                                                ? "-" + hit.endPosition
-                                                : ""));
-                                System.out.println(" " + CodecUtil.termPrefix(hit.data)
-                                        + (CodecUtil.termValue(hit.data) != null
-                                                ? ":" + CodecUtil.termValue(hit.data)
-                                                : "")
-                                        + ", ");
-                            }
+                                        ? "-" + hit.endPosition
+                                        : ""));
+                            	LOGGER.log(Level.INFO," " + CodecUtil.termPrefix(hit.data)
+                                + (CodecUtil.termValue(hit.data) != null
+                                ? ":" + CodecUtil.termValue(hit.data)
+                                : "")
+                        + ", ");
+                                
+                                                         }
                         }
                         // if (prefixes != null && !prefixes.isEmpty()) {
                         // }

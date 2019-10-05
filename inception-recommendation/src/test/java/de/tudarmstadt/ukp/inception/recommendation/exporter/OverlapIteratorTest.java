@@ -25,6 +25,8 @@ import static org.junit.Assert.assertEquals;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.junit.Test;
 
@@ -33,6 +35,9 @@ import de.tudarmstadt.ukp.inception.recommendation.util.OverlapIterator;
 
 public class OverlapIteratorTest
 {
+	
+	private static final Logger LOGGER = Logger.getLogger(OverlapIteratorTest.class.getName());
+
     @Test
     public void testStep2()
     {
@@ -265,11 +270,13 @@ public class OverlapIteratorTest
                 .distinct().collect(toList());
 
         if (!r1.equals(r2)) {
-            System.out.println("Comparing... Mismatch!");
-            System.out.println("A        : " + a);
-            System.out.println("B        : " + b);
-            System.out.println("Expected : " + r1);
-            System.out.println("Actual   : " + r2);
+        	
+        	LOGGER.log(Level.INFO,"Comparing... Mismatch!");
+        	LOGGER.log(Level.INFO,"A        : " + a);
+        	LOGGER.log(Level.INFO,"B        : " + b);
+        	LOGGER.log(Level.INFO,"Expected : " + r1);
+        	LOGGER.log(Level.INFO,"Actual   : " + r2);
+        	
 
             // Repeat test with debugging turned on.
             overlapping(a, b, true, true);
@@ -303,8 +310,9 @@ public class OverlapIteratorTest
             final boolean overlaps = it.getA().overlaps(it.getB());
 
             if (debug) {
-                System.out.println("   ->A:" + it.getA() + " B:" + it.getB() + " :: " + overlaps);
-            }
+            
+            	LOGGER.log(Level.INFO,"   ->A:" + it.getA() + " B:" + it.getB() + " :: " + overlaps);
+            	        }
 
             if (overlaps) {
                 result.add(it.getA());
@@ -314,7 +322,9 @@ public class OverlapIteratorTest
         }
 
         if (showSteps) {
-            System.out.println("- Steps  : " + it.getStepCount());
+            
+        	LOGGER.log(Level.INFO,"- Steps  : " + it.getStepCount());
+        	
         }
 
         return result;
