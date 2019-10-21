@@ -173,7 +173,8 @@ public class SPARQLQueryBuilderGenericTest
         
         assertThat(roots).extracting(KBHandle::getIdentifier).allMatch(_root -> {
             try (RepositoryConnection conn = repo.getConnection()) {
-//                LOGGER.log(Level.INFO,"R"); 
+                LOGGER.log(Level.INFO,"R: %s%n", _root); 
+
                 List<KBHandle> children = SPARQLQueryBuilder
                         .forClasses(kb)
                         .childrenOf(_root)
@@ -183,14 +184,15 @@ public class SPARQLQueryBuilderGenericTest
                         SPARQLQueryBuilder
                                 .forClasses(kb)
                                 .parentsOf(_child)
-                                .limit(3)
+                                .limit(5)
                                 .asHandles(conn, true)
                                 .stream()
                                 .map(KBHandle::getIdentifier)
-//                                .map(v -> { 
-//                                   LOGGER.log(Level.INFO,"C"); 
-//                                    return v;
-//                                })
+                                
+                                .map(v -> { 
+                                   LOGGER.log(Level.INFO,"C: %s%n", v); 
+                                    return v;
+                                })
                                 .anyMatch(iri -> rootIdentifiers.contains(iri)));
             }
         });

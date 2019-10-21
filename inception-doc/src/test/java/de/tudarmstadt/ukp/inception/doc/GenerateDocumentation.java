@@ -18,6 +18,7 @@
 package de.tudarmstadt.ukp.inception.doc;
 
 import java.io.File;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -42,7 +43,7 @@ public class GenerateDocumentation
     private static Path asciiDocPath = Paths.get("src", "main", "resources", "META-INF", "asciidoc");
 
 
-    private static List<Path> getAsciiDocs(Path dir) throws Exception
+    private static List<Path> getAsciiDocs(Path dir) throws IOException
     {
         return Files.list(dir)
                 .filter(Files::isDirectory)
@@ -69,7 +70,7 @@ public class GenerateDocumentation
                 .attribute("product-name", "INCEpTION")
                 .attribute("product-website-url", "https://inception-project.github.io")
                 .attribute("icons", "font")
-                .attribute("toc", "preamble")
+                .attribute("toc", "left")
                 .attribute("sourceHighlighter", "coderay")
                 .get();
         OptionsBuilder options = OptionsBuilder.options()
