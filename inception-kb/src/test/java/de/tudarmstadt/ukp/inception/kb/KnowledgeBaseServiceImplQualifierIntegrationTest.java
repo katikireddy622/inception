@@ -112,7 +112,7 @@ public class KnowledgeBaseServiceImplQualifierIntegrationTest {
         sut.createConcept(kb, concept);
         sut.createProperty(kb, property);
         conceptHandle = concept.toKBHandle();
-        property.toKBHandle();
+        propertyHandle =property.toKBHandle();
         statement = testFixtures.buildStatement(conceptHandle, property, "Test statement");
         sut.upsertStatement(kb, statement);
     }
