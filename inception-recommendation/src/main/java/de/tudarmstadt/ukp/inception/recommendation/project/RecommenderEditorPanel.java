@@ -103,6 +103,8 @@ public class RecommenderEditorPanel
     private @SpringBean ApplicationEventPublisherHolder appEventPublisherHolder;
     private @SpringBean UserDao userDao;
 
+    
+    
     private TextField<String> nameField;
     private WebMarkupContainer traitsContainer;
     private WebMarkupContainer activationContainer;
@@ -122,6 +124,7 @@ public class RecommenderEditorPanel
     {
         super(aId, aRecommender);
 
+        
         setOutputMarkupId(true);
         setOutputMarkupPlaceholderTag(true);
 
@@ -204,6 +207,7 @@ public class RecommenderEditorPanel
                     RecommendationEngineFactory factory = recommenderRegistry
                             .getFactory(getModelObject().getKey());
                     newTraits = factory.createTraitsEditor(MID_TRAITS, form.getModel());
+                            
                 }
                 else {
                     newTraits = new EmptyPanel(MID_TRAITS);
@@ -305,6 +309,7 @@ public class RecommenderEditorPanel
             }
         };
         
+     
         form.add(new LambdaAjaxLink(MID_DELETE, this::actionDelete)
                 .onConfigure(_this -> _this.setVisible(form.getModelObject().getId() != null)));
         form.add(new LambdaAjaxLink(MID_CANCEL, this::actionCancel));
@@ -312,8 +317,9 @@ public class RecommenderEditorPanel
         form.add(traitsContainer = new WebMarkupContainer(MID_TRAITS_CONTAINER));
         traitsContainer.setOutputMarkupPlaceholderTag(true);
         traitsContainer.add(new EmptyPanel(MID_TRAITS));
+        
     }
-
+    
     private void autoUpdateName(AjaxRequestTarget aTarget, TextField<String> aField,
             Recommender aRecommender)
     {

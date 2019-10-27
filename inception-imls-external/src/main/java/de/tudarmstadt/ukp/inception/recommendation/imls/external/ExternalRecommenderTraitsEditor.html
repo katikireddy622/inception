@@ -19,18 +19,21 @@
   xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
 <wicket:extend>
   <form wicket:id="form">
+    
     <div class="form-group">
       <div class="col-sm-12 form-horizontal">
         <div class="form-group" wicket:enclosure="remoteUrl">
           <label class="col-sm-3 control-label">
             <wicket:message key="remoteUrl"/>
           </label>
+    
           <div class="col-sm-9">
             <input wicket:id="remoteUrl" type="text" class="form-control"></input>
           </div>
         </div>
       </div>
     </div>
+    
     <div class="form-group" wicket:enclosure="trainable">
       <div class="col-sm-offset-3 col-sm-9">
         <div class="checkbox">
@@ -42,5 +45,11 @@
       </div>  
     </div>
   </form>
+  
+  <div style="color:green" wicket:id="succesMessage">
+	</div>
+	<div style="color:red" wicket:id="feedbackMessage">
+	</div>
+  
 </wicket:extend>
 </html>
